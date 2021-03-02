@@ -1,0 +1,143 @@
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html {
+  font-size: 62.5%;
+}
+body {
+  font-family: "Space Mono", monospace;
+  font-size: 2.3rem;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background-color: gray;
+  display: grid;
+  place-content: center;
+}
+
+button {
+  border: none;
+  background: none;
+  outline: none;
+  font: inherit;
+}
+
+/* #region grid */
+
+.calculator-container {
+  background-color: hsl(0, 0%, 18%);
+  padding: 0.1em;
+  width: min-content;
+  display: grid;
+
+  gap: 0.1em;
+  grid-template-columns: repeat(4, 60px);
+  grid-template-rows: repeat(6, 60px);
+  grid-template-areas:
+    "display display display display"
+    "plus    minus   times   divide"
+    "num7    num8    num9    equals"
+    "num4    num5    num6    equals"
+    "num1    num2    num3    equals"
+    "num0    dot     ac      equals";
+}
+
+.calculator-container > * {
+  display: grid;
+  place-items: center;
+}
+
+.display {
+  grid-area: display;
+  place-items: end;
+  padding: 0.5em;
+  font-family: "Inconsolata", monospace;
+  font-size: 2.5rem;
+}
+.plus {
+  grid-area: plus;
+}
+.minus {
+  grid-area: minus;
+}
+.times {
+  grid-area: times;
+}
+
+.divide {
+  grid-area: divide;
+}
+.equals {
+  grid-area: equals;
+}
+.num9 {
+  grid-area: num9;
+}
+.num8 {
+  grid-area: num8;
+}
+.num7 {
+  grid-area: num7;
+}
+.num6 {
+  grid-area: num6;
+}
+.num5 {
+  grid-area: num5;
+}
+.num4 {
+  grid-area: num4;
+}
+.num3 {
+  grid-area: num3;
+}
+.num2 {
+  grid-area: num2;
+}
+.num1 {
+  grid-area: num1;
+}
+.dot {
+  grid-area: dot;
+}
+.ac {
+  grid-area: ac;
+}
+/* #endregion */
+
+/* #region style */
+.display {
+  background-color: hsl(10, 0%, 10%);
+  color: aliceblue;
+  text-align: right;
+}
+.operator {
+  background: hsl(350, 70%, 60%);
+  opacity: 0.9;
+}
+.num {
+  background-color: hsl(330, 70%, 60%);
+}
+.equals {
+  background-color: hsl(30, 100%, 60%);
+}
+
+.num:hover,
+.equals:hover,
+.num:focus,
+.equals:focus,
+.operator:hover,
+.operator:focus {
+  outline: 2px solid hsl(164, 70%, 90%);
+  opacity: 1;
+}
+
+.is-selected {
+  outline: 2px solid hsl(164, 70%, 90%);
+}
+
+/* #endregion */
