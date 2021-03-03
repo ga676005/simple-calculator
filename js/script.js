@@ -19,14 +19,25 @@ function handleNumberEnter(e) {
   if (!e.target.closest("[data-num]")) return
   const num = e.target.dataset.num
   if (
-    (enterValue.length === 0 && num === "0") ||
-    (enterValue.includes(".") && num === ".") ||
-    enterValue.length > 17
+    (enterValue.startsWith("0") && !enterValue.includes(".") && num === "0") || //第一個數是0，沒有小數點，輸入的數又是0
+    (enterValue.includes(".") && num === ".") || //已經有小數點，又輸入小數點
+    enterValue.length > 16 //字串長度
   )
     return
 
-  enterValue += num
-  console.log(enterValue)
+  if (enterValue.length === 0 && num === ".") {
+    //第一個輸入是小數點的時候
+    enterValue = "0."
+  } else {
+    if (display.textContent === "0" && num !== ".") {
+      //開頭是0，輸入的值不是小數點時，用輸入的值替換掉0
+      enterValue = num
+    } else {
+      enterValue += num
+    }
+  }
+  // enterValue += enterValue.length === 0 && num === "." ? "0." : num
+  console.log(num)
   display.textContent = enterValue
 }
 
@@ -52,6 +63,11 @@ function calculate() {
   operators.forEach((o) => o.classList.remove("is-selected"))
 
   const value = parseFloat(enterValue)
+  if (value === 0) {
+    reset()
+    display.textContent = "無法除以零"
+    return
+  }
 
   switch (currentOperator) {
     case "+":
@@ -75,6 +91,7 @@ function calculate() {
 }
 
 function reset() {
+  operators.forEach((o) => o.classList.remove("is-selected"))
   currentValue = 0
   enterValue = ""
   display.textContent = "0"
