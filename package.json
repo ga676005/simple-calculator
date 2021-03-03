@@ -1,0 +1,24 @@
+{
+  "name": "calculator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ga676005/simple-calculator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ga676005/simple-calculator/issues"
+  },
+  "homepage": "https://github.com/ga676005/simple-calculator#readme",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4"
+  }
+}

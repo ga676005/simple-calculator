@@ -2,7 +2,7 @@ const calculator = document.querySelector(".calculator-container")
 const display = calculator.querySelector("[data-display]")
 const operators = [...calculator.querySelectorAll("[data-operator]")]
 const equals = calculator.querySelector("[data-equals]")
-const allClear = calculator.querySelector("[data-all-clear]")
+const clearBtn = calculator.querySelector("[data-all-clear]")
 let enterValue = "",
   currentValue = 0,
   currentOperator = ""
@@ -13,7 +13,7 @@ calculator.addEventListener("click", handOperatorEnter)
 
 equals.addEventListener("click", calculate)
 
-allClear.addEventListener("click", reset)
+clearBtn.addEventListener("click", handleClear)
 
 function handleNumberEnter(e) {
   if (!e.target.closest("[data-num]")) return
@@ -38,6 +38,7 @@ function handleNumberEnter(e) {
   }
   // enterValue += enterValue.length === 0 && num === "." ? "0." : num
   console.log(num)
+  clearBtn.textContent = "CE"
   display.textContent = enterValue
 }
 
@@ -88,6 +89,16 @@ function calculate() {
   enterValue = ""
   display.textContent = currentValue
   currentOperator = ""
+}
+
+function handleClear() {
+  if (clearBtn.textContent === "CE") {
+    enterValue = ""
+    display.textContent = "0"
+    clearBtn.textContent = "AC"
+  } else {
+    reset()
+  }
 }
 
 function reset() {
