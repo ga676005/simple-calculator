@@ -67,7 +67,7 @@ function calculate() {
       currentValue /= value
       break
     default:
-      break
+      return
   }
   enterValue = ""
   display.textContent = currentValue
