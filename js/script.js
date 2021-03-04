@@ -2,10 +2,12 @@ const calculator = document.querySelector('.calculator-container')
 const display = calculator.querySelector('[data-display]')
 const operators = [...calculator.querySelectorAll('[data-operator]')]
 const equals = calculator.querySelector('[data-equals]')
-const clearBtn = calculator.querySelector('[data-all-clear]')
+const clearBtn = calculator.querySelector('[data-clear]')
 let enterValue = '',
   currentValue = 0,
-  currentOperator = ''
+  currentOperator = '',
+  lastValue,
+  lastOperator
 
 calculator.addEventListener('click', handleNumberEnter)
 
@@ -45,6 +47,7 @@ function handleNumberEnter(e) {
 
 function handOperatorEnter(e) {
   if (!e.target.closest('[data-operator]')) return
+  lastOperator = ''
   const operator = e.target.dataset.operator
   highlightOperator(e.target)
 
@@ -56,46 +59,113 @@ function handOperatorEnter(e) {
       enterValue = ''
     }
   }
-
   currentOperator = operator
 }
 
-function calculate() {
-  if (enterValue.length === 0) return
-  operators.forEach((o) => o.classList.remove('is-selected'))
-
-  const value = parseFloat(enterValue)
-
-  switch (currentOperator) {
+function calculateAgain() {
+  switch (lastOperator) {
     case '+':
-      currentValue += value
+      currentValue += lastValue
       break
     case '-':
-      currentValue -= value
+      currentValue -= lastValue
       break
     case '*':
-      currentValue *= value
+      currentValue *= lastValue
       break
     case '/':
-      if (value === 0) {
+      if (lastValue === 0) {
         reset()
         display.textContent = '無法除以零'
         return
       }
-      currentValue /= value
+      currentValue /= lastValue
       break
-    default:
-      currentValue = value
-      display.textContent = currentValue
-
-      return
   }
-
-  currentValue *= 1
-  enterValue = ''
-  display.textContent = currentValue
-  currentOperator = ''
 }
+
+function calculate() {
+  if (enterValue.length === 0) {
+    calculateAgain()
+    display.textContent = currentValue
+  } else {
+    operators.forEach((o) => o.classList.remove('is-selected'))
+
+    const value = parseFloat(enterValue)
+
+    switch (currentOperator) {
+      case '+':
+        currentValue += value
+        break
+      case '-':
+        currentValue -= value
+        break
+      case '*':
+        currentValue *= value
+        break
+      case '/':
+        if (value === 0) {
+          reset()
+          display.textContent = '無法除以零'
+          return
+        }
+        currentValue /= value
+        break
+      default:
+        // 沒案加減乘除直接按 = 的時候
+        currentValue = value
+        display.textContent = currentValue
+        return
+    }
+    //Save value for calculate again
+    lastValue = value
+    lastOperator = currentOperator
+
+    //update value
+    enterValue = ''
+    display.textContent = currentValue
+    currentOperator = ''
+  }
+}
+
+// function calculate() {
+//   if (enterValue.length === 0) return
+//   operators.forEach((o) => o.classList.remove('is-selected'))
+
+//   const value = parseFloat(enterValue)
+
+//   switch (currentOperator) {
+//     case '+':
+//       currentValue += value
+//       break
+//     case '-':
+//       currentValue -= value
+//       break
+//     case '*':
+//       currentValue *= value
+//       break
+//     case '/':
+//       if (value === 0) {
+//         reset()
+//         display.textContent = '無法除以零'
+//         return
+//       }
+//       currentValue /= value
+//       break
+//     default:
+//       // 沒案加減乘除直接按 = 的時候
+//       currentValue = value
+//       display.textContent = currentValue
+//       return
+//   }
+//   //clear decimal point 5. to 5
+//   // currentValue *= 1
+
+//   //update value
+//   enterValue = ''
+//   display.textContent = currentValue
+//   currentOperator = ''
+// }
 
 function handleClear() {
   if (clearBtn.textContent === 'CE') {
@@ -139,7 +209,7 @@ function getDisplayValue() {
 }
 
 function resetCalc() {
-  click('ac ac')
+  click('C C')
   console.assert(currentValue === 0, 'currentValue should be 0 after reset')
   console.assert(
     enterValue === '',
@@ -278,6 +348,36 @@ const tests = [
     keys: '1 + 3 * 2 / 4 = 1 + = 5 = ',
     expect: '6',
     message: 'Should be 6'
+  },
+  {
+    keys: '1 + 3 = + 3 C - 3 = ',
+    expect: '1',
+    message: 'Should be 1'
+  },
+  {
+    keys: '1 + 3 = + 3 C C - 3 = ',
+    expect: '-3',
+    message: 'Should be -3'
+  },
+  {
+    keys: '1 + 1 = = ',
+    expect: '3',
+    message: 'Should be 3'
+  },
+  {
+    keys: '1 - 1 = = ',
+    expect: '-1',
+    message: 'Should be -1'
+  },
+  {
+    keys: '1 * 2 = = ',
+    expect: '4',
+    message: 'Should be 4'
+  },
+  {
+    keys: '4 / 2 = = ',
+    expect: '1',
+    message: 'Should be 1'
   }
 ]
 

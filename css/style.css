@@ -1,3 +1,5 @@
+/* #region General */
+
 *,
 ::before,
 ::after {
@@ -11,9 +13,7 @@ html {
 body {
   font-family: 'Space Mono', monospace;
   font-size: min(5rem, 8vw);
-  margin: 0;
-  padding: 0;
-  height: 100vh;
+  min-height: 100vh;
   background-color: gray;
   display: grid;
   place-content: center;
@@ -26,27 +26,35 @@ button {
   font: inherit;
 }
 
-/* #region grid */
+/* #endregion General */
 
+/* #region Layout */
 .calculator-container {
   background-color: hsl(0, 0%, 18%);
   padding: 0.2em;
-  width: 100vw;
-  max-width: 600px;
-  height: 100vh;
-  max-height: 800px;
-
+  width: min(100vw, 600px);
+  height: min(100vh, 850px);
+  /* aspect-ratio: 2/3; */
+  /* height: 100%; */
   display: grid;
   gap: 0.2em;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(6, 1fr);
+  /* grid-template-rows: repeat(6, 1fr); */
   grid-template-areas:
     'display display display display'
     'plus    minus   times   divide'
     'num7    num8    num9    equals'
     'num4    num5    num6    equals'
     'num1    num2    num3    equals'
-    'num0    dot     ac      equals';
+    'num0    dot     clear   equals';
+}
+/* TODO: 手機橫向重排template-areas */
+@media (max-width: 812px) {
+  @media (orientation: landscape) {
+    .calculator-container {
+      min-height: 600px !important;
+    }
+  }
 }
 
 .calculator-container > * {
@@ -107,12 +115,12 @@ button {
 .dot {
   grid-area: dot;
 }
-.ac {
-  grid-area: ac;
+.clear {
+  grid-area: clear;
 }
-/* #endregion */
+/* #endregion Layout */
 
-/* #region style */
+/* #region Calculator */
 .display {
   background-color: hsl(10, 0%, 10%);
   color: aliceblue;
@@ -129,12 +137,8 @@ button {
   background-color: hsl(30, 100%, 60%);
 }
 
-.num:hover,
-.equals:hover,
-.num:focus,
-.equals:focus,
-.operator:hover,
-.operator:focus {
+:is(.num, .equals, .operator):hover,
+:is(.num, .equals, .operator):focus {
   outline: 0.1em solid hsl(164, 70%, 90%);
 }
 
@@ -142,4 +146,4 @@ button {
   outline: 0.1em solid hsl(164, 70%, 90%);
 }
 
-/* #endregion */
+/* #endregion Calculator */
