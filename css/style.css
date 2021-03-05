@@ -33,13 +33,11 @@ button {
   background-color: hsl(0, 0%, 18%);
   padding: 0.2em;
   width: min(100vw, 600px);
-  height: min(100vh, 850px);
-  /* aspect-ratio: 2/3; */
-  /* height: 100%; */
+  height: min(100vmax, 850px);
   display: grid;
   gap: 0.2em;
   grid-template-columns: repeat(4, 1fr);
-  /* grid-template-rows: repeat(6, 1fr); */
+  grid-template-rows: repeat(6, 1fr);
   grid-template-areas:
     'display display display display'
     'plus    minus   times   divide'
@@ -48,11 +46,25 @@ button {
     'num1    num2    num3    equals'
     'num0    dot     clear   equals';
 }
-/* TODO: 手機橫向重排template-areas */
+
+/* 手機橫向 */
 @media (max-width: 812px) {
   @media (orientation: landscape) {
     .calculator-container {
-      min-height: 600px !important;
+      width: 100vw;
+      height: 100vh;
+      font-size: min(10vh, 5rem);
+      grid-template-columns: repeat(5, 1fr);
+      grid-template-rows: repeat(5, 1fr);
+      grid-template-areas:
+        'display display display display display'
+        'num7    num8    num9    plus    times  '
+        'num4    num5    num6    minus   divide '
+        'num1    num2    num3    equals  equals '
+        'num0    dot     clear   equals  equals ';
+    }
+    p.display {
+      padding-bottom: 0.1em;
     }
   }
 }
@@ -65,9 +77,10 @@ button {
 .display {
   grid-area: display;
   place-items: end;
-  padding: 0.5em;
+  font-size: 1.2em;
+  padding-bottom: 0.2em;
+  padding-right: 0.3em;
   font-family: 'Inconsolata', monospace;
-  /* font-size: 2.5rem; */
 }
 .plus {
   grid-area: plus;
