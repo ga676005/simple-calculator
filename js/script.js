@@ -1,3 +1,4 @@
+import getTests from './tests.js'
 const calculator = document.querySelector('.calculator-container')
 const display = calculator.querySelector('[data-display]')
 const operators = [...calculator.querySelectorAll('[data-operator]')]
@@ -19,6 +20,8 @@ clearBtn.addEventListener('click', handleClear)
 
 function handleNumberEnter(e) {
   if (!e.target.closest('[data-num]')) return
+  lastValue = null
+
   const num = e.target.dataset.num
   if (
     (enterValue.startsWith('0') && !enterValue.includes('.') && num === '0') ||
@@ -47,12 +50,15 @@ function handleNumberEnter(e) {
 
 function handOperatorEnter(e) {
   if (!e.target.closest('[data-operator]')) return
-  lastOperator = ''
+  lastOperator = null //按過運算符號就不要再 = = = 累計
   const operator = e.target.dataset.operator
   highlightOperator(e.target)
 
   if (currentOperator) {
+    // 數字 運算符號 數字 運算符號 會跑到這
     calculate()
+    // calculate會又把lastOperator加上，處理5 + 10 + = = = 不要連加
+    lastOperator = null
   } else {
     if (enterValue.length > 0) {
       currentValue = parseFloat(enterValue)
@@ -60,6 +66,8 @@ function handOperatorEnter(e) {
     }
   }
   currentOperator = operator
+  // console.log({ lastOperator, lastValue })
+
 }
 
 function calculateAgain() {
@@ -82,15 +90,14 @@ function calculateAgain() {
       currentValue /= lastValue
       break
   }
+  display.textContent = currentValue
 }
 
 function calculate() {
   if (enterValue.length === 0) {
-    calculateAgain()
-    display.textContent = currentValue
+    if (lastValue && lastOperator) calculateAgain()
   } else {
     operators.forEach((o) => o.classList.remove('is-selected'))
-
     const value = parseFloat(enterValue)
 
     switch (currentOperator) {
@@ -112,7 +119,7 @@ function calculate() {
         currentValue /= value
         break
       default:
-        // 沒案加減乘除直接按 = 的時候
+        // 沒按加減乘除直接按 = 的時候，把5.變成5，1.000000變成1
         currentValue = value
         display.textContent = currentValue
         return
@@ -234,151 +241,6 @@ function runTest({ keys, expect, message } = {}) {
   resetCalc()
 }
 
-const tests = [
-  {
-    keys: '1 2 3 - 1 0 0 = ',
-    expect: '23',
-    message: 'Should be 23'
-  },
-  {
-    keys: '1  0  0  /  0  = ',
-    expect: '無法除以零',
-    message: 'Should be 無法除以零'
-  },
-  {
-    keys: '* 1 = ',
-    expect: '0',
-    message: 'Should be 0'
-  },
-  {
-    weirdTest: true,
-    ksd: 'app'
-  },
-  {
-    keys: '.',
-    expect: '0.',
-    message: 'Should be 0.'
-  },
-  {
-    keys: '. . .',
-    expect: '0.',
-    message: 'Should be 0.'
-  },
-  {
-    keys: '. =',
-    expect: '0',
-    message: 'Should be 0'
-  },
-  {
-    keys: '5 . =',
-    expect: '5',
-    message: 'Should be 5'
-  },
-  {
-    keys: '. 3 =',
-    expect: '0.3',
-    message: 'Should be 0.3'
-  },
-  {
-    keys: '1 + 1 + 1 + 1',
-    expect: '1',
-    message: 'Should be 1'
-  },
-  {
-    keys: '1 + 1 + 1 + 1 =',
-    expect: '4',
-    message: 'Should be 4'
-  },
-  {
-    keys: '1 - 1 - 1 - 1',
-    expect: '1',
-    message: 'Should be 1'
-  },
-  {
-    keys: '1 - 1 - 1 - 1 =',
-    expect: '-2',
-    message: 'Should be -2'
-  },
-  {
-    keys: '2 * 2 * 2',
-    expect: '2',
-    message: 'Should be 2'
-  },
-  {
-    keys: '2 * 2 * 2 =',
-    expect: '8',
-    message: 'Should be 8'
-  },
-  {
-    keys: '2 / 2 / 2 ',
-    expect: '2',
-    message: 'Should be 2'
-  },
-  {
-    keys: '2 / 2 / 2 =',
-    expect: '0.5',
-    message: 'Should be 0.5'
-  },
-  {
-    keys: '1 + 3 * 2 / 4',
-    expect: '4',
-    message: 'Should be 4'
-  },
-  {
-    keys: '1 + 3 * 2 / 4 =',
-    expect: '2',
-    message: 'Should be 2'
-  },
-  {
-    keys: '1 + 3 * 2 / 4 = 1 2 3',
-    expect: '123',
-    message: 'Should be 123'
-  },
-  {
-    keys: '1 + 3 * 2 / 4 = 1 2 3 =',
-    expect: '123',
-    message: 'Should be 123'
-  },
-  {
-    keys: '1 + 3 * 2 / 4 = 1 + = ',
-    expect: '1',
-    message: 'Should be 1'
-  },
-  {
-    keys: '1 + 3 * 2 / 4 = 1 + = 5 = ',
-    expect: '6',
-    message: 'Should be 6'
-  },
-  {
-    keys: '1 + 3 = + 3 C - 3 = ',
-    expect: '1',
-    message: 'Should be 1'
-  },
-  {
-    keys: '1 + 3 = + 3 C C - 3 = ',
-    expect: '-3',
-    message: 'Should be -3'
-  },
-  {
-    keys: '1 + 1 = = ',
-    expect: '3',
-    message: 'Should be 3'
-  },
-  {
-    keys: '1 - 1 = = ',
-    expect: '-1',
-    message: 'Should be -1'
-  },
-  {
-    keys: '1 * 2 = = ',
-    expect: '4',
-    message: 'Should be 4'
-  },
-  {
-    keys: '4 / 2 = = ',
-    expect: '1',
-    message: 'Should be 1'
-  }
-]
+const tests = getTests()
 
 tests.forEach(runTest)
