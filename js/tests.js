@@ -115,12 +115,12 @@ export default function getTests() {
       message: 'Should be 6'
     },
     {
-      keys: '1 + 3 = + 3 C - 3 = ',
+      keys: '1 + 3 = + 3 Delete - 3 = ',
       expect: '1',
       message: 'Should be 1'
     },
     {
-      keys: '1 + 3 = + 3 C C - 3 = ',
+      keys: '1 + 3 = + 3 Delete Delete - 3 = ',
       expect: '-3',
       message: 'Should be -3'
     },
@@ -185,11 +185,27 @@ export default function getTests() {
     }, {
       keys: '/ 0 =',
       expect: '無法除以零',
-      message: '/ 0 Should be 無法除以零'
+      message: '/ 0 = Should be 無法除以零'
     }, {
       keys: '3 - 10 - + 1 = = 6 = - 4 = = ',
       expect: '-2',
       message: '3 - 10 - + 1 = = 6 = - 4 = = Should be -2'
+    }, {
+      keys: 'a b c d 1 2 3 Delete + 5 - - a + 2 = ',
+      expect: '7',
+      message: 'a b c d 1 2 3 Delete + 5 - - a + 2 = Should be 7'
+    }, {
+      keys: '5 + z - 3 = = + 6 Delete Delete + 2 ',
+      expect: '2',
+      message: '5 + z - 3 = = + 6 Delete Delete + 2 Should be 2'
+    }, {
+      keys: '5 + z - 3 = = + 6 Delete Delete + 2 = ',
+      expect: '2',
+      message: '5 + z - 3 = = + 6 Delete Delete + 2 = Should be 2'
+    }, {
+      keys: '5 + z - 3 = = + 6 Delete Delete + 2 = = ',
+      expect: '4',
+      message: '5 + z - 3 = = + 6 Delete Delete + 2 = = Should be 4'
     },
   ]
 }

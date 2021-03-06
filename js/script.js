@@ -10,6 +10,17 @@ let enterValue = '',
   lastValue,
   lastOperator
 
+document.addEventListener('keydown', e => {
+  if (e.repeat) return
+  const button = e.key === "Enter"
+    ? equals
+    : calculator.querySelector(`[data-key="${e.key}"]`)
+  button?.click()
+
+  // 解決運算符號按了沒框起來
+  if (button?.hasAttribute('data-operator')) highlightOperator(button)
+})
+
 calculator.addEventListener('click', handleNumberEnter)
 
 calculator.addEventListener('click', handOperatorEnter)
@@ -57,6 +68,7 @@ function handOperatorEnter(e) {
   if (currentOperator) {
     // 數字 運算符號 數字 運算符號 會跑到這
     calculate()
+
     // calculate會又把lastOperator加上，處理5 + 10 + = = = 不要連加
     lastOperator = null
   } else {
@@ -66,8 +78,6 @@ function handOperatorEnter(e) {
     }
   }
   currentOperator = operator
-  // console.log({ lastOperator, lastValue })
-
 }
 
 function calculateAgain() {
@@ -135,45 +145,6 @@ function calculate() {
   }
 }
 
-// function calculate() {
-//   if (enterValue.length === 0) return
-//   operators.forEach((o) => o.classList.remove('is-selected'))
-
-//   const value = parseFloat(enterValue)
-
-//   switch (currentOperator) {
-//     case '+':
-//       currentValue += value
-//       break
-//     case '-':
-//       currentValue -= value
-//       break
-//     case '*':
-//       currentValue *= value
-//       break
-//     case '/':
-//       if (value === 0) {
-//         reset()
-//         display.textContent = '無法除以零'
-//         return
-//       }
-//       currentValue /= value
-//       break
-//     default:
-//       // 沒案加減乘除直接按 = 的時候
-//       currentValue = value
-//       display.textContent = currentValue
-//       return
-//   }
-//   //clear decimal point 5. to 5
-//   // currentValue *= 1
-
-//   //update value
-//   enterValue = ''
-//   display.textContent = currentValue
-//   currentOperator = ''
-// }
-
 function handleClear() {
   if (clearBtn.textContent === 'CE') {
     enterValue = ''
@@ -203,10 +174,16 @@ function highlightOperator(target) {
  */
 function click(string) {
   const clickedKeys = string.split(' ').filter((entry) => entry !== '')
-  // console.log(clickedKeys)
   clickedKeys.forEach((key) => {
     const button = calculator.querySelector(`[data-key="${key.trim()}"]`)
-    // console.log(button)
+    button?.click()
+  })
+}
+
+function press(string) {
+  const pressedKeys = string.split(' ').filter((entry) => entry !== '')
+  pressedKeys.forEach((key) => {
+    const button = calculator.querySelector(`[data-key="${key.trim()}"]`)
     button?.click()
   })
 }
@@ -216,7 +193,7 @@ function getDisplayValue() {
 }
 
 function resetCalc() {
-  click('C C')
+  click('Delete Delete')
   console.assert(currentValue === 0, 'currentValue should be 0 after reset')
   console.assert(
     enterValue === '',
@@ -234,13 +211,22 @@ function resetCalc() {
  * @param {Object} testObject
  * keys: "1 + 2 =", expect: "result", message: "description"
  */
-function runTest({ keys, expect, message } = {}) {
+function runClickTest({ keys, expect, message } = {}) {
   if (!keys || !expect || !message) return
   click(keys)
   console.assert(getDisplayValue() === expect, message)
   resetCalc()
 }
 
+function runPressTest({ keys, expect, message } = {}) {
+  if (!keys || !expect || !message) return
+  press(keys)
+  console.assert(getDisplayValue() === expect, message)
+  resetCalc()
+}
+
+
 const tests = getTests()
 
-tests.forEach(runTest)
+tests.forEach(runClickTest)
+tests.forEach(runPressTest)
