@@ -90,7 +90,7 @@ button {
     }
     p.display::after {
       font-size: 0.3em;
-      top: 0.2em;
+      bottom: min(70%, 6rem);
       right: 1.5em;
     }
   }
@@ -104,7 +104,7 @@ button {
 .display {
   grid-area: display;
   place-items: end;
-  font-size: 1.2em;
+  font-size: 1em;
   padding-bottom: 0.2em;
   padding-right: 0.3em;
   font-family: 'Inconsolata', monospace;
@@ -177,7 +177,7 @@ button {
 .display::after {
   content: attr(data-display);
   position: absolute;
-  bottom: min(50%, 2.5em);
+  bottom: min(60%, 3em);
   right: 1em;
   font-size: 0.5em;
   color: rgba(255, 255, 255, 0.65);
