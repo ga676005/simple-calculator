@@ -190,9 +190,10 @@ tests.forEach(runClickTest)
 tests.forEach(runPressTest)
 
 // Animation
-gsap.from("[data-key]", { scale: 0, y: "random(-100,100)", x: "random(-100,100)", stagger: .03 })
+gsap.set('[data-key]', { y: "random(-100,100)", x: "random(-100,100)" })
+gsap.to("[data-key]", { opacity: 1, scale: 1, y: 0, x: 0, stagger: .03 })
 gsap.set('[data-display]', { transformOrigin: "left" })
-gsap.from('[data-display]', { scale: 0, duration: .3, delay: 1 })
+gsap.to('[data-display]', { opacity: 1, scale: 1, duration: .3, delay: 1 })
 
 const tl = gsap.timeline()
 document.addEventListener('click', (e) => {
