@@ -14,7 +14,7 @@ body {
   font-family: 'Space Mono', monospace;
   font-size: min(5rem, 8vw);
   min-height: 100vh;
-  background-color: #f7f7f7;
+  background-color: rgb(20, 20, 20);
   display: grid;
   place-content: center;
 }
@@ -40,7 +40,7 @@ button {
   );
   --btn-num-bg: rgba(0, 0, 0, 0.55);
   --btn-num-fg: white;
-  --btn-operator-bg: rgba(0, 0, 0, 0.45);
+  --btn-operator-bg: rgba(0, 0, 0, 0.4);
   --btn-operator-fg: #fded0a;
   --btn-equals-bg: hsla(39, 100%, 57%, 0.9);
   --btn-equals-fg: rgba(0, 0, 0, 0.8);
@@ -75,7 +75,7 @@ button {
     .calculator-container {
       width: 100vw;
       height: 100vh;
-      font-size: min(10vh, 5rem);
+      font-size: min(8vh, 4rem);
       grid-template-columns: repeat(5, 1fr);
       grid-template-rows: repeat(5, 1fr);
       grid-template-areas:
@@ -104,7 +104,7 @@ button {
 .display {
   grid-area: display;
   place-items: end;
-  font-size: 1em;
+  font-size: 0.95em;
   padding-bottom: 0.2em;
   padding-right: 0.3em;
   font-family: 'Inconsolata', monospace;
