@@ -209,3 +209,62 @@ export default function getTests() {
     },
   ]
 }
+import { currentValue, enterValue, currentOperator } from './script.js'
+const calculator = document.querySelector('.calculator-container')
+
+/**
+ * 測試用: 觸發按鍵
+ * @param {String} string 字元之間要用空格隔開
+ */
+function click(string) {
+  const clickedKeys = string.split(' ').filter((entry) => entry !== '')
+  clickedKeys.forEach((key) => {
+    const button = calculator.querySelector(`[data-key="${key.trim()}"]`)
+    button?.click()
+  })
+}
+
+function press(string) {
+  const pressedKeys = string.split(' ').filter((entry) => entry !== '')
+  pressedKeys.forEach((key) => {
+    const button = calculator.querySelector(`[data-key="${key.trim()}"]`)
+    button?.click()
+  })
+}
+
+function getDisplayValue() {
+  return calculator.querySelector('[data-display]').textContent
+}
+
+function resetCalc() {
+  click('Delete Delete')
+  console.assert(currentValue === 0, 'currentValue should be 0 after reset')
+  console.assert(
+    enterValue === '',
+    'enterValue should be empty string after reset'
+  )
+  console.assert(enterValue === '', 'display should show 0 after reset')
+  console.assert(
+    currentOperator === '',
+    'currentOperator should be empty string after reset'
+  )
+}
+
+/**
+ * 跑測試
+ * @param {Object} testObject
+ * keys: "1 + 2 =", expect: "result", message: "description"
+ */
+export function runClickTest({ keys, expect, message } = {}) {
+  if (!keys || !expect || !message) return
+  click(keys)
+  console.assert(getDisplayValue() === expect, message)
+  resetCalc()
+}
+
+export function runPressTest({ keys, expect, message } = {}) {
+  if (!keys || !expect || !message) return
+  press(keys)
+  console.assert(getDisplayValue() === expect, message)
+  resetCalc()
+}
