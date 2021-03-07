@@ -14,7 +14,7 @@ body {
   font-family: 'Space Mono', monospace;
   font-size: min(5rem, 8vw);
   min-height: 100vh;
-  background-color: gray;
+  background-color: #f7f7f7;
   display: grid;
   place-content: center;
 }
@@ -24,14 +24,36 @@ button {
   background: none;
   outline: none;
   font: inherit;
+  cursor: pointer;
 }
 
+.bg-colorful {
+  --bg: linear-gradient(
+    to top,
+    #fcc5e4 0%,
+    #fda34b 15%,
+    #ff7882 35%,
+    #c8699e 52%,
+    #7046aa 71%,
+    #0c1db8 87%,
+    #020f75 100%
+  );
+  --btn-num-bg: rgba(0, 0, 0, 0.55);
+  --btn-num-fg: white;
+  --btn-operator-bg: rgba(0, 0, 0, 0.45);
+  --btn-operator-fg: #fded0a;
+  --btn-equals-bg: hsla(39, 100%, 57%, 0.9);
+  --btn-equals-fg: rgba(0, 0, 0, 0.8);
+  --display-bg: rgba(0, 0, 0, 0.55);
+  --display-fg: white;
+  --border-radius: 0.3em;
+  --box-shadow: 0px 1px 6px rgba(255, 255, 255, 0.2);
+}
 /* #endregion General */
 
 /* #region Layout */
 .calculator-container {
-  background-color: hsl(0, 0%, 18%);
-  padding: 0.2em;
+  padding: 0.3em;
   width: min(100vw, 600px);
   height: min(100vmax, 850px);
   display: grid;
@@ -66,6 +88,11 @@ button {
     p.display {
       padding-bottom: 0.1em;
     }
+    p.display::after {
+      font-size: 0.3em;
+      top: 0.2em;
+      right: 1.5em;
+    }
   }
 }
 
@@ -81,7 +108,9 @@ button {
   padding-bottom: 0.2em;
   padding-right: 0.3em;
   font-family: 'Inconsolata', monospace;
+  position: relative;
 }
+
 .plus {
   grid-area: plus;
 }
@@ -134,25 +163,53 @@ button {
 /* #endregion Layout */
 
 /* #region Calculator */
+.calculator-container {
+  background-color: hsl(0, 0%, 18%);
+  background-image: var(--bg);
+}
+
 .display {
-  background-color: hsl(10, 0%, 10%);
-  color: aliceblue;
+  background-color: var(--display-bg, #000);
+  color: var(--display-fg, #f7f7f7);
   text-align: right;
 }
+
+.display::after {
+  content: attr(data-display);
+  position: absolute;
+  bottom: min(50%, 2.5em);
+  right: 1em;
+  font-size: 0.5em;
+  color: rgba(255, 255, 255, 0.65);
+}
+
 .operator {
-  background: hsl(350, 70%, 60%);
-  opacity: 0.9;
+  background: var(--btn-operator-bg, (hsl(350, 70%, 60%)));
+  color: var(--btn-operator-fg, white);
 }
 .num {
-  background-color: hsl(330, 70%, 60%);
+  background-color: var(--btn-num-bg, hsl(330, 70%, 60%));
+  color: var(--btn-num-fg);
 }
 .equals {
-  background-color: hsl(30, 100%, 60%);
+  background-color: var(--btn-equals-bg, hsl(30, 100%, 60%));
+  color: var(--btn-equals-fg);
+}
+
+:is(.num, .equals, .operator, .display, .calculator-container) {
+  border-radius: var(--border-radius);
+}
+
+:is(.num, .equals, .operator) {
+  opacity: 0.9;
+  box-shadow: var(--box-shadow);
 }
 
 :is(.num, .equals, .operator):hover,
 :is(.num, .equals, .operator):focus {
   outline: 0.1em solid hsl(164, 70%, 90%);
+  opacity: 1;
+  --btn-equals-fg: rgba(0, 0, 0, 1);
 }
 
 .is-selected {
