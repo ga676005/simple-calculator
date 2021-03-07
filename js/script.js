@@ -191,9 +191,14 @@ tests.forEach(runPressTest)
 
 // Animation
 gsap.set('[data-key]', { y: "random(-100,100)", x: "random(-100,100)" })
-gsap.to("[data-key]", { opacity: 1, scale: 1, y: 0, x: 0, stagger: .03 })
+gsap.to("[data-key]", {
+  duration: 1.5,
+  ease: Power4.easeOut, opacity: 1, scale: 1, y: 0, x: 0, stagger: .03
+})
 gsap.set('[data-display]', { transformOrigin: "left" })
-gsap.to('[data-display]', { opacity: 1, scale: 1, duration: .3, delay: 1 })
+gsap.to('[data-display]', {
+  ease: Back.easeOut.config(1.2), opacity: 1, scale: 1, duration: 1, delay: .5
+})
 
 const tl = gsap.timeline()
 document.addEventListener('click', (e) => {
