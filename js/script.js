@@ -57,6 +57,8 @@ function handleNumberEnter(e) {
   }
   clearBtn.textContent = 'CE'
   display.textContent = enterValue
+
+  if (!currentOperator) display.dataset.display = ``
 }
 
 function handOperatorEnter(e) {
@@ -78,9 +80,11 @@ function handOperatorEnter(e) {
     }
   }
   currentOperator = operator
+  display.dataset.display = `${currentValue} ${currentOperator}`
 }
 
 function calculateAgain() {
+  const expressionStr = getExpressionString(currentValue, lastOperator, lastValue)
   switch (lastOperator) {
     case '+':
       currentValue += lastValue
@@ -100,7 +104,12 @@ function calculateAgain() {
       currentValue /= lastValue
       break
   }
+  display.dataset.display = expressionStr
   display.textContent = currentValue
+}
+
+function getExpressionString(firstValue, operator, secondValue) {
+  return `${firstValue} ${operator} ${secondValue} =`
 }
 
 function calculate() {
@@ -109,6 +118,7 @@ function calculate() {
   } else {
     operators.forEach((o) => o.classList.remove('is-selected'))
     const value = parseFloat(enterValue)
+    const expressionStr = getExpressionString(currentValue, currentOperator, value)
 
     switch (currentOperator) {
       case '+':
@@ -140,6 +150,7 @@ function calculate() {
 
     //update value
     enterValue = ''
+    display.dataset.display = expressionStr
     display.textContent = currentValue
     currentOperator = ''
   }
@@ -159,8 +170,11 @@ function reset() {
   operators.forEach((o) => o.classList.remove('is-selected'))
   currentValue = 0
   enterValue = ''
+  display.dataset.display = ""
   display.textContent = '0'
   currentOperator = ''
+  lastValue = null
+  lastOperator = null
 }
 
 function highlightOperator(target) {
