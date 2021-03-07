@@ -181,10 +181,23 @@ function highlightOperator(target) {
   target.classList.add('is-selected')
 }
 
-// 跑測試
+//跑測試
 import getTests, { runClickTest, runPressTest } from './tests.js'
 export { currentValue, enterValue, currentOperator }
 const tests = getTests()
 
 tests.forEach(runClickTest)
 tests.forEach(runPressTest)
+
+// Animation
+gsap.from("[data-key]", { scale: 0, y: "random(-100,100)", x: "random(-100,100)", stagger: .03 })
+gsap.set('[data-display]', { transformOrigin: "left" })
+gsap.from('[data-display]', { scale: 0, duration: .3, delay: 1 })
+
+const tl = gsap.timeline()
+document.addEventListener('click', (e) => {
+  if (!e.target.matches('[data-key]')) return
+  tl.to(e.target, { duration: .05, opacity: .6 })
+  tl.to(e.target, { duration: .05, opacity: 1 })
+  console.log(e.target.dataset.key)
+})

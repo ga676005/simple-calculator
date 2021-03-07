@@ -43,10 +43,10 @@ button {
   --btn-operator-bg: rgba(0, 0, 0, 0.4);
   --btn-operator-fg: #fded0a;
   --btn-equals-bg: hsla(39, 100%, 57%, 0.9);
-  --btn-equals-fg: rgba(0, 0, 0, 0.8);
+  --btn-equals-fg: rgba(0, 0, 0, 0.7);
   --display-bg: rgba(0, 0, 0, 0.55);
   --display-fg: white;
-  --border-radius: 0.3em;
+  --border-radius: 0.1em;
   --box-shadow: 0px 1px 6px rgba(255, 255, 255, 0.2);
 }
 /* #endregion General */
@@ -57,7 +57,7 @@ button {
   width: min(100vw, 600px);
   height: min(100vmax, 850px);
   display: grid;
-  gap: 0.2em;
+  gap: 0.1em;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(6, 1fr);
   grid-template-areas:
@@ -166,6 +166,10 @@ button {
 .calculator-container {
   background-color: hsl(0, 0%, 18%);
   background-image: var(--bg);
+  box-shadow: 0 2.8px 2.2px rgba(255, 255, 255, 0.02),
+    0 6.7px 5.3px rgba(255, 255, 255, 0.028),
+    0 12.5px 10px rgba(255, 255, 255, 0.035),
+    0 22.3px 17.9px rgba(255, 255, 255, 0.042);
 }
 
 .display {
@@ -186,6 +190,7 @@ button {
 .operator {
   background: var(--btn-operator-bg, (hsl(350, 70%, 60%)));
   color: var(--btn-operator-fg, white);
+  font-size: 1.2em;
 }
 .num {
   background-color: var(--btn-num-bg, hsl(330, 70%, 60%));
@@ -196,11 +201,11 @@ button {
   color: var(--btn-equals-fg);
 }
 
-:is(.num, .equals, .operator, .display, .calculator-container) {
+:is(.num, .equals, .operator, .display, ) {
   border-radius: var(--border-radius);
 }
 
-:is(.num, .equals, .operator) {
+:is(.num, .equals, .operator, ) {
   opacity: 0.9;
   box-shadow: var(--box-shadow);
 }
