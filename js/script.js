@@ -9,11 +9,9 @@ let enterValue = '',
   lastValue,
   lastOperator
 
-document.addEventListener('keydown', e => {
+document.addEventListener('keydown', (e) => {
   if (e.repeat) return
-  const button = e.key === "Enter"
-    ? equals
-    : calculator.querySelector(`[data-key="${e.key}"]`)
+  const button = e.key === 'Enter' ? equals : calculator.querySelector(`[data-key="${e.key}"]`)
   button?.click()
 
   // 解決運算符號按了沒框起來
@@ -104,7 +102,7 @@ function calculateAgain() {
       break
   }
   display.dataset.display = expressionStr
-  display.textContent = currentValue
+  display.textContent = isFinite(currentValue) ? currentValue : '錯誤'
 }
 
 function getExpressionString(firstValue, operator, secondValue) {
@@ -150,7 +148,7 @@ function calculate() {
     //update value
     enterValue = ''
     display.dataset.display = expressionStr
-    display.textContent = currentValue
+    display.textContent = isFinite(currentValue) ? currentValue : '錯誤'
     currentOperator = ''
   }
 }
@@ -169,7 +167,7 @@ function reset() {
   operators.forEach((o) => o.classList.remove('is-selected'))
   currentValue = 0
   enterValue = ''
-  display.dataset.display = ""
+  display.dataset.display = ''
   display.textContent = '0'
   currentOperator = ''
   lastValue = null
@@ -190,20 +188,14 @@ tests.forEach(runClickTest)
 tests.forEach(runPressTest)
 
 // Animation
-gsap.set('[data-key]', { y: "random(-100,100)", x: "random(-100,100)" })
-gsap.to("[data-key]", {
-  duration: 1.5,
-  ease: Power4.easeOut, opacity: 1, scale: 1, y: 0, x: 0, stagger: .03
-})
-gsap.set('[data-display]', { transformOrigin: "left" })
-gsap.to('[data-display]', {
-  ease: Back.easeOut.config(1.2), opacity: 1, scale: 1, duration: 1, delay: .5
-})
+gsap.set('[data-key]', { y: 'random(-100,100)', x: 'random(-100,100)' })
+gsap.to('[data-key]', { duration: 1.5, ease: Power4.easeOut, opacity: 1, scale: 1, y: 0, x: 0, stagger: 0.03 })
+gsap.set('[data-display]', { transformOrigin: 'left' })
+gsap.to('[data-display]', { ease: Back.easeOut.config(1.2), opacity: 1, scale: 1, duration: 1, delay: 0.5 })
 
 const tl = gsap.timeline()
 document.addEventListener('click', (e) => {
   if (!e.target.matches('[data-key]')) return
-  tl.to(e.target, { duration: .05, opacity: .6 })
-  tl.to(e.target, { duration: .05, opacity: 1 })
-  console.log(e.target.dataset.key)
+  tl.to(e.target, { duration: 0.05, opacity: 0.6 })
+  tl.to(e.target, { duration: 0.05, opacity: 1 })
 })
